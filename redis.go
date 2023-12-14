@@ -63,8 +63,8 @@ func (r *Redis) HGetDel(ctx context.Context, key string, field string) (string, 
 	return script.HGetDel.Run(ctx, r, []string{key, field}).Text()
 }
 
-func (r *Redis) Lock(ctx context.Context, key string, expireInSeconds int) bool {
-	s, err := r.SetNX(ctx, key, 1, time.Second*time.Duration(expireInSeconds)).Result()
+func (r *Redis) Lock(ctx context.Context, key string, expiration time.Duration) bool {
+	s, err := r.SetNX(ctx, key, 1, expiration).Result()
 	if err != nil {
 		return false
 	}
